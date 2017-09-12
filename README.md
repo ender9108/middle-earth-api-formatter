@@ -109,16 +109,33 @@ vous pouvez définir certain champ contenu dans "**sort**")
 // tri ascendant sur les champs firstname,lastname
 GET /api/v1/users?sort=firstname,lastname
 
+
+[_api] => Array(
+    [sort] => Array(
+        [asc] => Array(
+            [0] => firstname
+            [1] => lastname
+        )
+    )
+)
+
 // tri descendant sur les champs firstname,lastname
 GET /api/v1/users?sort=firstname,lastname&desc
 
+
+[_api] => Array(
+    [sort] => Array(
+        [desc] => Array(
+            [0] => firstname
+            [1] => lastname
+        )
+    )
+)
+
 // tri ascendant sur les champs firstname,lastname et descendant sur le champ age
 GET /api/v1/users?sort=firstname,lastname,age&desc=age
-```
 
-ApiFormatterMiddleware retournera un tableau :
 
-```
 [_api] => Array(
     [sort] => Array(
         [asc] => Array(
