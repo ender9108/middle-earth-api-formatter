@@ -5,6 +5,7 @@
 
 Norme de l'api est basé sur l'article [d'octo talks](https://blog.octo.com/designer-une-api-rest/)
 
+
 ## Description
 Permet de formatter et uniformiser les paramètres passés pour une API REST.
 Un attribut avec la clé "**_api**" est créé dans l'objet "**Request**".
