@@ -40,7 +40,7 @@ class ApiFormatterMiddleware implements MiddlewareInterface
             $params['filters'] = [];
 
             foreach ($queryParams as $key => $value) {
-                $params['filters'][$key] = $value;
+                $params['filters'][$key] = $this->parseStringInfos($value);
             }
         }
 
@@ -124,13 +124,13 @@ class ApiFormatterMiddleware implements MiddlewareInterface
         $descList = [];
 
         if (null !== $desc) {
-            $descList = $this->parseStringInfos($desc);
+            $descList = (trim($desc) == '' ? null : $this->parseStringInfos($desc));
         }
 
         $sortList = $this->parseStringInfos($sort);
 
         foreach ($sortList as $key => $value) {
-            if (in_array($value, $descList, true)) {
+            if (null !== $descList && in_array($value, $descList, true)) {
                 $result['desc'][] = $value;
             } else {
                 $result['asc'][] = $value;
