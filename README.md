@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.org/ender9108/psr15-api-formatter.svg?branch=master)](https://travis-ci.org/ender9108/psr15-api-formatter)
 [![Coverage Status](https://coveralls.io/repos/github/ender9108/psr15-api-formatter/badge.svg?branch=master)](https://coveralls.io/github/ender9108/psr15-api-formatter?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/grafikart/psr15-csrf-middleware/v/stable)](https://packagist.org/packages/grafikart/psr15-csrf-middleware)
-[![Total Downloads](https://poser.pugx.org/grafikart/psr15-csrf-middleware/downloads)](https://packagist.org/packages/grafikart/psr15-csrf-middleware)
-[![License](https://poser.pugx.org/grafikart/psr15-csrf-middleware/license)](https://packagist.org/packages/grafikart/psr15-csrf-middleware)
+[![Latest Stable Version](https://poser.pugx.org/enderlab/psr15-api-formatter/v/stable)](https://packagist.org/packages/enderlab/psr15-api-formatter)
+[![Total Downloads](https://poser.pugx.org/enderlab/psr15-api-formatter/downloads)](https://packagist.org/packages/enderlab/psr15-api-formatter)
+[![License](https://poser.pugx.org/enderlab/psr15-api-formatter/license)](https://packagist.org/packages/enderlab/psr15-api-formatter)
 
 Norme de l'api est basé sur l'article [d'octo talks](https://blog.octo.com/designer-une-api-rest/)
 
