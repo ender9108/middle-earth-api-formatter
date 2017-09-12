@@ -35,7 +35,7 @@ class ApiFormatterMiddlewareTest extends TestCase
             'GET',
             '/api/v1/users'
         );
-        $request = $request->withQueryParams(['sort' => 'firstname,lastname&desc=age']);
+        $request = $request->withQueryParams(['sort' => 'firstname,lastname', 'desc' => 'age']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $response = $apiFormatter->process($request, $delegate);
@@ -66,5 +66,18 @@ class ApiFormatterMiddlewareTest extends TestCase
         $apiFormatter = new ApiFormatterMiddleware();
         $this->expectException(\InvalidArgumentException::class);
         $apiFormatter->process($request, $delegate);
+    }
+
+    public function testParseQueryFiltersParam()
+    {
+        $request = new ServerRequest(
+            'GET',
+            '/api/v1/users'
+        );
+        $request = $request->withQueryParams(['bidule' => 'truc', 'machin' => 'chose']);
+        $delegate = new Dispatcher();
+        $apiFormatter = new ApiFormatterMiddleware();
+        $response = $apiFormatter->process($request, $delegate);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 }
