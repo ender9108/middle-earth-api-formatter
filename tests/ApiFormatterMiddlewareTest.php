@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\EnderLab;
 
 use EnderLab\ApiFormatterMiddleware;
