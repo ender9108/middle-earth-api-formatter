@@ -40,7 +40,7 @@ GET /users/1?fields=firstname,lastname,address(city,street)&sort=firstname,lastn
 )
 ```
 
-## Paramètres
+## Paramètres
 
 ### Réponses partielles
 
