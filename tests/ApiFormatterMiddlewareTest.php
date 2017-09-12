@@ -35,7 +35,7 @@ class ApiFormatterMiddlewareTest extends TestCase
             'GET',
             '/api/v1/users'
         );
-        $request = $request->withQueryParams(['sort' => 'firstname,lastname', 'desc' => 'age']);
+        $request = $request->withQueryParams(['sort' => 'firstname,lastname,age,size', 'desc' => 'age,size']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $response = $apiFormatter->process($request, $delegate);
