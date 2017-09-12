@@ -150,18 +150,20 @@ GET /api/v1/users?sort=firstname,lastname,age&desc=age
 
 ```
 // Ex : Récupération de tous les users dont le prénom est "john"
-GET /api/v1/users?firstname=john
+GET /api/v1/users?=john
+
+[_api] => Array(
+    [filters] => Array(
+        [firstname] => john
+    )
+)
 
 // Ex : Récupération de tous les users dont le prénom est "john" et "david"
 GET /api/v1/users?firstname=john,david
-```
 
-ApiFormatterMiddleware retournera un tableau :
-
-```
 [_api] => Array(
     [filters] => Array(
-        [test] => bidule
+        [firstname] => [john,david]
     )
 )
 ```
