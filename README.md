@@ -116,6 +116,22 @@ GET /api/v1/users?sort=firstname,lastname&desc
 GET /api/v1/users?sort=firstname,lastname,age&desc=age
 ```
 
+ApiFormatterMiddleware retournera un tableau :
+
+```
+[_api] => Array(
+    [sort] => Array(
+        [asc] => Array(
+            [0] => firstname
+            [1] => lastname
+        )
+        [desc] => Array(
+            [0] => age
+        )
+    )
+)
+```
+
 ## Filtres
 
 ```
@@ -124,4 +140,14 @@ GET /api/v1/users?firstname=john
 
 // Ex : Récupération de tous les users dont le prénom est "john" et "david"
 GET /api/v1/users?firstname=john,david
+```
+
+ApiFormatterMiddleware retournera un tableau :
+
+```
+[_api] => Array(
+    [filters] => Array(
+        [test] => bidule
+    )
+)
 ```
