@@ -109,7 +109,6 @@ vous pouvez définir certain champ contenu dans "**sort**")
 // tri ascendant sur les champs firstname,lastname
 GET /api/v1/users?sort=firstname,lastname
 
-
 [_api] => Array(
     [sort] => Array(
         [asc] => Array(
@@ -122,7 +121,6 @@ GET /api/v1/users?sort=firstname,lastname
 // tri descendant sur les champs firstname,lastname
 GET /api/v1/users?sort=firstname,lastname&desc
 
-
 [_api] => Array(
     [sort] => Array(
         [desc] => Array(
@@ -134,7 +132,6 @@ GET /api/v1/users?sort=firstname,lastname&desc
 
 // tri ascendant sur les champs firstname,lastname et descendant sur le champ age
 GET /api/v1/users?sort=firstname,lastname,age&desc=age
-
 
 [_api] => Array(
     [sort] => Array(
