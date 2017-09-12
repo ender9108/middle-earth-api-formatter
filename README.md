@@ -74,7 +74,7 @@ ApiFormatterMiddleware retournera un tableau :
 )
 ```
 
-## Pagination
+## Pagination
 
 Le paramètre "**range**" permet de paginer les résultats.
 
