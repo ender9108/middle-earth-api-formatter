@@ -39,4 +39,28 @@ class ApiFormatterMiddlewareTest extends TestCase
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
+
+    public function testParseRangeParam()
+    {
+        $request = new ServerRequest(
+            'GET',
+            '/api/v1/users?range=0-10'
+        );
+        $delegate = new Dispatcher();
+        $apiFormatter = new ApiFormatterMiddleware();
+        $response = $apiFormatter->process($request, $delegate);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    /*public function testParseRangeParamWithError()
+    {
+        $request = new ServerRequest(
+            'GET',
+            '/api/v1/users?range=10'
+        );
+        $delegate = new Dispatcher();
+        $apiFormatter = new ApiFormatterMiddleware();
+        $this->expectException(\InvalidArgumentException::class);
+        $apiFormatter->process($request, $delegate);
+    }*/
 }

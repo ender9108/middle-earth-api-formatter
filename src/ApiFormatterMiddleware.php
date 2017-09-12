@@ -46,10 +46,6 @@ class ApiFormatterMiddleware implements MiddlewareInterface
 
         $request = $request->withAttribute('_api', $params);
 
-        echo '<pre>';
-        print_r($request->getAttributes());
-        echo '</pre>';
-
         return $delegate->process($request);
     }
 
