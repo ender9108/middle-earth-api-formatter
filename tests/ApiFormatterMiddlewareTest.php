@@ -59,7 +59,7 @@ class ApiFormatterMiddlewareTest extends TestCase
     {
         $request = new ServerRequest(
             'GET',
-            '/api/v1/users?'
+            '/api/v1/users'
         );
         $request = $request->withQueryParams(['range' => '10']);
         $delegate = new Dispatcher();
