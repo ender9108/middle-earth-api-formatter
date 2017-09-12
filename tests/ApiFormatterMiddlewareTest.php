@@ -20,8 +20,9 @@ class ApiFormatterMiddlewareTest extends TestCase
     {
         $request = new ServerRequest(
             'GET',
-            '/api/v1/users?fields=firstname,lastname,address(country,city)'
+            '/api/v1/users'
         );
+        $request = $request->withQueryParams(['fields' => 'firstname,lastname,address(country,city)']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $response = $apiFormatter->process($request, $delegate);
@@ -32,8 +33,9 @@ class ApiFormatterMiddlewareTest extends TestCase
     {
         $request = new ServerRequest(
             'GET',
-            '/api/v1/users?sort=firstname,lastname&desc=age'
+            '/api/v1/users'
         );
+        $request = $request->withQueryParams(['sort' => 'firstname,lastname&desc=age']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $response = $apiFormatter->process($request, $delegate);
@@ -44,23 +46,25 @@ class ApiFormatterMiddlewareTest extends TestCase
     {
         $request = new ServerRequest(
             'GET',
-            '/api/v1/users?range=0-10'
+            '/api/v1/users'
         );
+        $request = $request->withQueryParams(['range' => '0-10']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 
-    /*public function testParseRangeParamWithError()
+    public function testParseRangeParamWithError()
     {
         $request = new ServerRequest(
             'GET',
-            '/api/v1/users?range=10'
+            '/api/v1/users?'
         );
+        $request = $request->withQueryParams(['range' => '10']);
         $delegate = new Dispatcher();
         $apiFormatter = new ApiFormatterMiddleware();
         $this->expectException(\InvalidArgumentException::class);
         $apiFormatter->process($request, $delegate);
-    }*/
+    }
 }
