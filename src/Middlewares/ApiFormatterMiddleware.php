@@ -124,7 +124,7 @@ class ApiFormatterMiddleware implements MiddlewareInterface
         $descList = [];
 
         if (null !== $desc) {
-            $descList = (trim($desc) == '' ? null : $this->parseStringInfos($desc));
+            $descList = ('' === trim($desc) ? null : $this->parseStringInfos($desc));
         }
 
         $sortList = $this->parseStringInfos($sort);
