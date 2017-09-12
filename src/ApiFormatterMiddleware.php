@@ -1,4 +1,5 @@
 <?php
+
 namespace Enderlab;
 
 use Interop\Http\ServerMiddleware\DelegateInterface;
@@ -45,15 +46,15 @@ class ApiFormatterMiddleware implements MiddlewareInterface
 
         $request = $request->withAttribute('_api', $params);
 
-        print '<pre>';
+        echo '<pre>';
         print_r($request->getAttributes());
-        print '</pre>';
+        echo '</pre>';
 
         return $delegate->process($request);
     }
 
     /**
-     * Parse query fields infos
+     * Parse query fields infos.
      *
      * fields=attribute1,attributeN
      *   Ex: GET /clients/007?fields=firstname,name
@@ -61,30 +62,30 @@ class ApiFormatterMiddleware implements MiddlewareInterface
      *   Ex: GET /clients/007?fields=firstname,name,address(street)
      *
      * @param string $string
+     *
      * @return array
      */
     private function parseStringInfos(string $string): array
     {
         $result = [];
-        $length = strlen($string);
+        $length = mb_strlen($string);
         $count = 0;
         $subCount = 0;
         $startBracket = false;
         $masterField = null;
 
-        for ($i = 0 ; $i < $length ; $i++) {
-            if ($string[$i] == ',') {
-                if( false === $startBracket ) {
-                    $count++;
+        for ($i = 0; $i < $length; ++$i) {
+            if (',' === $string[$i]) {
+                if (false === $startBracket) {
+                    ++$count;
                 } else {
-                    $subCount++;
+                    ++$subCount;
                 }
-            } elseif ($string[$i] == '(') {
+            } elseif ('(' === $string[$i]) {
                 $startBracket = true;
                 $masterField = $result[$count];
                 $result[$count] = [$masterField => []];
-
-            } elseif ($string[$i] == ')') {
+            } elseif (')' === $string[$i]) {
                 $startBracket = false;
                 $subCount = 0;
                 $masterField = null;
@@ -94,13 +95,13 @@ class ApiFormatterMiddleware implements MiddlewareInterface
                 }
 
                 if (true === $startBracket &&
-                    !is_null($masterField) &&
+                    null !== $masterField &&
                     !isset($result[$count][$masterField][$subCount])
                 ) {
                     $result[$count][$masterField][$subCount] = '';
                 }
 
-                if( true === $startBracket ) {
+                if (true === $startBracket) {
                     $result[$count][$masterField][$subCount] .= $string[$i];
                 } else {
                     $result[$count] .= $string[$i];
@@ -114,10 +115,11 @@ class ApiFormatterMiddleware implements MiddlewareInterface
     /**
      * Parse query sort infos
      * sort=attribute1,attributeN&desc=attribute1
-     *   Ex: GET /clients/007?sort=firstname,name&desc=name
+     *   Ex: GET /clients/007?sort=firstname,name&desc=name.
      *
-     * @param string $sort
+     * @param string      $sort
      * @param string|null $desc
+     *
      * @return array
      */
     private function getSortInfos(string $sort, ?string $desc = null): array
@@ -125,14 +127,14 @@ class ApiFormatterMiddleware implements MiddlewareInterface
         $result = ['asc' => [], 'desc' => []];
         $descList = [];
 
-        if (!is_null($desc)) {
+        if (null !== $desc) {
             $descList = $this->parseStringInfos($desc);
         }
 
         $sortList = $this->parseStringInfos($sort);
 
         foreach ($sortList as $key => $value) {
-            if (in_array($value, $descList)) {
+            if (in_array($value, $descList, true)) {
                 $result['desc'][] = $value;
             } else {
                 $result['asc'][] = $value;
@@ -145,16 +147,17 @@ class ApiFormatterMiddleware implements MiddlewareInterface
     /**
      * Parse query range infos
      * range=0-25
-     *   Ex: GET /clients/007?range=0-25
+     *   Ex: GET /clients/007?range=0-25.
      *
      * @param string $range
+     *
      * @return array
      */
     private function getRangeInfos(string $range): array
     {
         $result = explode('-', $range);
 
-        if (count($result) != 2) {
+        if (2 !== count($result)) {
             throw new \InvalidArgumentException(
                 'Parameters "range" malformed. Must expected two parameters range=[offset]-[limit]'
             );
