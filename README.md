@@ -8,7 +8,7 @@ Permet de formatter et uniformiser les paramètres passés pour une API REST.
 Un attribut avec la clé "**_api**" est créé dans l'objet "**Request**".
 
 ```
-GET /users/1?fields=firstname,lastname,address(city,street)&sort=firstname,lastname,age&desc=age&range=0-10&test=bidule
+GET /api/v1/users/1?fields=firstname,lastname,address(city,street)&sort=firstname,lastname,age&desc=age&range=0-10&test=bidule
 
 [_api] => Array(
     [fields] => Array(
@@ -47,9 +47,9 @@ GET /users/1?fields=firstname,lastname,address(city,street)&sort=firstname,lastn
 Les réponses partielles permettent au client de récupérer uniquement les informations dont il a besoin.
 
 ```
-GET /users/1?fields=firstname,lastname
+GET /api/v1/users/1?fields=firstname,lastname
 OR
-GET /users/1?fields=firstname,lastname,address(city,street)
+GET /api/v1/users/1?fields=firstname,lastname,address(city,street)
 ```
 
 ApiFormatterMiddleware retournera un tableau :
@@ -64,6 +64,29 @@ ApiFormatterMiddleware retournera un tableau :
                 [1] => street
             )
         )
+    )
+)
+```
+
+## Pagination
+
+Le paramètre "**range**" permet de paginer les résultats.
+
+Format : range={offset}-{limit}
+
+Si "**range**" ne contient pas les deux paramètres {offset} et {limit}, une exception de type 
+"**InvalidArgumentException**" est lancée.
+
+```
+GET /api/v1/users/1?range=0-10
+```
+
+ApiFormatterMiddleware retournera un tableau :
+```
+[_api] => Array(
+    [range] => Array(
+        [0] => 0    //offset
+        [1] => 10   //limit
     )
 )
 ```
