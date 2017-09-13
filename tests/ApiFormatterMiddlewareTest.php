@@ -3,7 +3,7 @@
 namespace Tests\EnderLab;
 
 use EnderLab\Dispatcher\Dispatcher;
-use EnderLab\Middlewares\ApiFormatterMiddleware;
+use EnderLab\ApiFormatterMiddleware;
 use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace EnderLab\Middlewares;
+namespace EnderLab;
 
 use Interop\Http\ServerMiddleware\DelegateInterface;
 use Interop\Http\ServerMiddleware\MiddlewareInterface;
