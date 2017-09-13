@@ -3,17 +3,17 @@
 namespace Tests\EnderLab;
 
 use EnderLab\Dispatcher\Dispatcher;
-use EnderLab\ApiFormatterMiddleware;
+use EnderLab\ApiRequestFormatter;
 use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 
-class ApiFormatterMiddlewareTest extends TestCase
+class ApiRequestFormatterTest extends TestCase
 {
     public function testCreateMiddleware()
     {
-        $apiFormatter = new ApiFormatterMiddleware();
-        $this->assertInstanceOf(ApiFormatterMiddleware::class, $apiFormatter);
+        $apiFormatter = new ApiRequestFormatter();
+        $this->assertInstanceOf(ApiRequestFormatter::class, $apiFormatter);
     }
 
     public function testParseFieldsParam()
@@ -24,7 +24,7 @@ class ApiFormatterMiddlewareTest extends TestCase
         );
         $request = $request->withQueryParams(['fields' => 'firstname,lastname,address(country,city)']);
         $delegate = new Dispatcher();
-        $apiFormatter = new ApiFormatterMiddleware();
+        $apiFormatter = new ApiRequestFormatter();
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -37,7 +37,7 @@ class ApiFormatterMiddlewareTest extends TestCase
         );
         $request = $request->withQueryParams(['sort' => 'firstname,lastname,age,size', 'desc' => 'age,size']);
         $delegate = new Dispatcher();
-        $apiFormatter = new ApiFormatterMiddleware();
+        $apiFormatter = new ApiRequestFormatter();
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -50,7 +50,7 @@ class ApiFormatterMiddlewareTest extends TestCase
         );
         $request = $request->withQueryParams(['range' => '0-10']);
         $delegate = new Dispatcher();
-        $apiFormatter = new ApiFormatterMiddleware();
+        $apiFormatter = new ApiRequestFormatter();
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -63,7 +63,7 @@ class ApiFormatterMiddlewareTest extends TestCase
         );
         $request = $request->withQueryParams(['range' => '10']);
         $delegate = new Dispatcher();
-        $apiFormatter = new ApiFormatterMiddleware();
+        $apiFormatter = new ApiRequestFormatter();
         $this->expectException(\InvalidArgumentException::class);
         $apiFormatter->process($request, $delegate);
     }
@@ -76,7 +76,7 @@ class ApiFormatterMiddlewareTest extends TestCase
         );
         $request = $request->withQueryParams(['bidule' => 'truc', 'machin' => 'chose']);
         $delegate = new Dispatcher();
-        $apiFormatter = new ApiFormatterMiddleware();
+        $apiFormatter = new ApiRequestFormatter();
         $response = $apiFormatter->process($request, $delegate);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
