@@ -29,10 +29,23 @@ class ApiResponseFormatter
             $requestParams = $this->request->getAttribute('_api');
 
             if (isset($requestParams['range']) && 2 === count($requestParams['range'])) {
-                $headers = $this->getRangeHeader($requestParams, $params);
+                if ($requestParams['range'][1] <= $this->api->getMaxRange()) {
+                    $headers = $this->getRangeHeader($requestParams, $params);
 
-                foreach ($headers as $key => $header) {
-                    $response = $response->withHeader($key, $header);
+                    foreach ($headers as $key => $header) {
+                        $response = $response->withHeader($key, $header);
+                    }
+
+                    if (isset($params['count']) && $params['count'] > $requestParams['range'][1]) {
+                        $response = $response->withStatus(206);
+                    }
+                } else {
+                    $response = $response->withStatus(400);
+                    $response = $response->withHeader('Content-Type', 'application/json');
+                    $response->getBody()->write(json_encode([
+                        'error'             => 'range error',
+                        'error_description' => 'Requested range not allowed'
+                    ]));
                 }
             }
         }
@@ -51,23 +64,11 @@ class ApiResponseFormatter
         $headers = [];
         $headers['Content-Range'] = $requestParams['range'][0] . '-' . $requestParams['range'][1] .
                                     (isset($params['count']) ? '/' . $params['count'] : '');
+        $headers['Accept-Range'] = $this->api->getResourceName() . ' ' . $this->api->getMaxRange();
 
         if (isset($params['count'])) {
-            $host = $this->request->getUri()->getScheme() . '://';
-            $host .= $this->request->getUri()->getHost();
-            $host .= (
-            '' !== $this->request->getUri()->getPort() ?
-                ':' . $this->request->getUri()->getPort() :
-                ''
-            );
-            $host .= $this->request->getUri()->getPath();
-            $host .= (
-            '' !== $this->request->getUri()->getQuery() ?
-                '?' . $this->request->getUri()->getQuery() :
-                ''
-            );
-            $headers['Link'] = [];
-            $headers['Link'][] = '<' . $host . '>; rel="self"';
+            $host = $this->buildHost();
+            $links = ['<' . $host . '>; rel="self"'];
             $currentHost = '';
 
             foreach (['first', 'prev', 'next', 'last'] as $rel) {
@@ -123,11 +124,32 @@ class ApiResponseFormatter
                 }
 
                 if (true === $exists) {
-                    $headers['Link'][] = '<' . $currentHost . '>; rel="' . $rel . '"';
+                    $links[] = '<' . $currentHost . '>; rel="' . $rel . '"';
                 }
             }
+
+            $headers['Link'] = implode(', ', $links);
         }
 
         return $headers;
+    }
+
+    private function buildHost()
+    {
+        $host = $this->request->getUri()->getScheme() . '://';
+        $host .= $this->request->getUri()->getHost();
+        $host .= (
+        '' !== $this->request->getUri()->getPort() ?
+            ':' . $this->request->getUri()->getPort() :
+            ''
+        );
+        $host .= $this->request->getUri()->getPath();
+        $host .= (
+        '' !== $this->request->getUri()->getQuery() ?
+            '?' . $this->request->getUri()->getQuery() :
+            ''
+        );
+
+        return $host;
     }
 }

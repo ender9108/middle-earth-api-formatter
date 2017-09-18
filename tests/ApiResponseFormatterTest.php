@@ -58,6 +58,9 @@ class ApiResponseFormatterTest extends TestCase
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response, ['count' => 100]);
         $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertSame(1, count($response->getHeader('Link')));
+        $this->assertSame('tests 10', $response->getHeader('Accept-Range')[0]);
+        $this->assertSame('20-10/100', $response->getHeader('Content-Range')[0]);
     }
 
     public function testFormatInstance2()
@@ -78,6 +81,9 @@ class ApiResponseFormatterTest extends TestCase
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response, ['count' => 100]);
         $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertSame(1, count($response->getHeader('Link')));
+        $this->assertSame('tests 10', $response->getHeader('Accept-Range')[0]);
+        $this->assertSame('0-10/100', $response->getHeader('Content-Range')[0]);
     }
 
     public function testFormatInstance3()
@@ -98,6 +104,9 @@ class ApiResponseFormatterTest extends TestCase
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response, ['count' => 10]);
         $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertSame(1, count($response->getHeader('Link')));
+        $this->assertSame('tests 10', $response->getHeader('Accept-Range')[0]);
+        $this->assertSame('0-10/10', $response->getHeader('Content-Range')[0]);
     }
 }
 
