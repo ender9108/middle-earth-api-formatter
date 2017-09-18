@@ -10,69 +10,20 @@ class ApiResponseFormatter
     /**
      * @var ServerRequest
      */
-    protected $request;
+    private $request;
 
     /**
-     * @var string
+     * @var ApiInterface
      */
-    protected $resourceName;
+    private $api;
 
-    /**
-     * @var int
-     */
-    protected $maxRange;
-
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(ApiInterface $api, ServerRequestInterface $request)
     {
         $this->request = $request;
+        $this->api = $api;
     }
 
     public function formatResponse(ResponseInterface $response, array $params = []): ResponseInterface
-    {
-        $response = $this->setHeaders($response, $params);
-
-        return $response;
-    }
-
-    /**
-     * @return string
-     */
-    public function getResourceName(): string
-    {
-        return $this->resourceName;
-    }
-
-    /**
-     * @param string $resourceName
-     */
-    public function setResourceName(string $resourceName): void
-    {
-        $this->resourceName = $resourceName;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaxRange(): int
-    {
-        return $this->maxRange;
-    }
-
-    /**
-     * @param int $maxRange
-     */
-    public function setMaxRange(int $maxRange): void
-    {
-        $this->maxRange = $maxRange;
-    }
-
-    /**
-     * @param ResponseInterface $response
-     * @param array             $params
-     *
-     * @return ResponseInterface
-     */
-    private function setHeaders(ResponseInterface $response, array $params = []): ResponseInterface
     {
         if ($this->request->getAttribute('_api', false)) {
             $requestParams = $this->request->getAttribute('_api');
@@ -117,8 +68,7 @@ class ApiResponseFormatter
             );
             $headers['Link'] = [];
             $headers['Link'][] = '<' . $host . '>; rel="self"';
-
-            echo $host . '<br>';
+            $currentHost = '';
 
             foreach (['first', 'prev', 'next', 'last'] as $rel) {
                 $exists = true;
@@ -130,43 +80,42 @@ class ApiResponseFormatter
                         } else {
                             $currentHost = str_replace(
                                 'range=' . $requestParams['range'][0] . '-' . $requestParams['range'][1],
-                                'range=0-' . $this->maxRange,
+                                'range=0-' . $this->api->getMaxRange(),
                                 $host
                             );
                         }
                         break;
                     case 'prev':
-                        if ((($requestParams['range'][0] - $this->maxRange) <= 0)) {
+                        if ((($requestParams['range'][0] - $this->api->getMaxRange()) <= 0)) {
                             $exists = false;
                         } else {
                             $currentHost = str_replace(
                                 'range=' . $requestParams['range'][0] . '-' . $requestParams['range'][1],
-                                'range=' . ($requestParams['range'][0] - $this->maxRange) . '-' . $this->maxRange,
+                                'range=' . ($requestParams['range'][0] - $this->api->getMaxRange()) . '-' . $this->api->getMaxRange(),
                                 $host
                             );
                         }
                         break;
                     case 'next':
-                        if (($requestParams['range'][0] + $this->maxRange) <= $requestParams['range'][0] ||
-
-                            ($requestParams['range'][0] + $this->maxRange) >= $params['count']
+                        if (($requestParams['range'][0] + $this->api->getMaxRange()) <= $requestParams['range'][0] ||
+                            ($requestParams['range'][0] + $this->api->getMaxRange()) >= $params['count']
                         ) {
                             $exists = false;
                         } else {
                             $currentHost = str_replace(
                                 'range=' . $requestParams['range'][0] . '-' . $requestParams['range'][1],
-                                'range=' . ($requestParams['range'][0] + $this->maxRange) . '-' . $this->maxRange,
+                                'range=' . ($requestParams['range'][0] + $this->api->getMaxRange()) . '-' . $this->api->getMaxRange(),
                                 $host
                             );
                         }
                         break;
                     case 'last':
-                        if (($params['count'] - $this->maxRange) === $requestParams['range'][0]) {
+                        if (($params['count'] - $this->api->getMaxRange()) === $requestParams['range'][0]) {
                             $exists = false;
                         } else {
                             $currentHost = str_replace(
                                 'range=' . $requestParams['range'][0] . '-' . $requestParams['range'][1],
-                                'range=' . ($params['count'] - $this->maxRange) . '-' . $this->maxRange,
+                                'range=' . ($params['count'] - $this->api->getMaxRange()) . '-' . $this->api->getMaxRange(),
                                 $host
                             );
                         }
