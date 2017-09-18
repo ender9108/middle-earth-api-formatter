@@ -42,16 +42,16 @@ class ApiResponseFormatterTest extends TestCase
 
     public function testFormatInstance()
     {
-        $range = [0, 10];
+        $range = [20, 10];
         $request = $this->makeRequest(
             [
                 '_api' => [
                     'fields' => ['firstname', 'lastname'],
-                    'sort' => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
-                    'range' => [$range[0], $range[1]]
+                    'sort'   => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+                    'range'  => [$range[0], $range[1]]
                 ]
             ],
-            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range='.$range[0].'-'.$range[1].'&test=bidule'
+            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
         );
 
         $response = new Response();
@@ -76,7 +76,7 @@ class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
      */
     public function getMaxRange(): int
     {
-        return 50;
+        return 10;
     }
 
     /**
