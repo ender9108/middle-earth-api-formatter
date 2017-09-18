@@ -50,7 +50,7 @@ class ApiResponseFormatter
     {
         $headers = [];
         $headers['Content-Range'] = $requestParams['range'][0] . '-' . $requestParams['range'][1] .
-                                    (null !== $params['count'] ? '/' . $params['count'] : '');
+                                    (isset($params['count']) ? '/' . $params['count'] : '');
 
         if (isset($params['count'])) {
             $host = $this->request->getUri()->getScheme() . '://';

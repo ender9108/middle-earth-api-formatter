@@ -25,15 +25,43 @@ class ApiResponseFormatterTest extends TestCase
     {
         $request = new ServerRequest('GET', '/tests');
         $request = $request->withAttribute('_api', [
-            'sort' => 'firstname,lastname,age,size',
-            'desc' => 'age,size',
-            'range' => '0-10'
+            'fields' => ['firstname', 'lastname'],
+            'sort' => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+            'range' => [0, 10]
         ]);
         $response = new Response();
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
+    /*
+     * [fields] => Array(
+        [0] => firstname
+        [1] => lastname
+        [4] => Array(
+            [address] => Array(
+                [0] => city
+                [1] => street
+            )
+        )
+    )
+    [sort] => Array(
+        [asc] => Array(
+            [0] => firstname
+            [1] => lastname
+        )
+        [desc] => Array(
+            [0] => age
+        )
+    )
+    [range] => Array(
+        [0] => 0
+        [1] => 10
+    )
+    [filters] => Array(
+        [test] => bidule
+    )
+     */
 }
 
 class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
