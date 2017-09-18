@@ -24,6 +24,11 @@ class ApiResponseFormatterTest extends TestCase
     public function testFormatInstance()
     {
         $request = new ServerRequest('GET', '/tests');
+        $request = $request->withAttribute('_api', [
+            'sort' => 'firstname,lastname,age,size',
+            'desc' => 'age,size',
+            'range' => '0-10'
+        ]);
         $response = new Response();
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response);
