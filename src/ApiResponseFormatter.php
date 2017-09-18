@@ -2,6 +2,7 @@
 
 namespace EnderLab;
 
+use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -27,19 +28,14 @@ class ApiResponseFormatter
     {
         if ($this->request->getAttribute('_api', false)) {
             $requestParams = $this->request->getAttribute('_api');
+            $response = $this->mergeHeaders(['Link' => $this->api->getHeaderLink()], $response);
 
             if (isset($requestParams['range']) && 2 === count($requestParams['range'])) {
                 if ($requestParams['range'][1] <= $this->api->getMaxRange()) {
                     $headers = $this->getRangeHeader($requestParams, $params);
-
-                    foreach ($headers as $key => $header) {
-                        $response = $response->withHeader($key, $header);
-                    }
-
-                    if (isset($params['count']) && $params['count'] > $requestParams['range'][1]) {
-                        $response = $response->withStatus(206);
-                    }
+                    $response = $this->mergeHeaders($headers, $response);
                 } else {
+                    $response = new Response();
                     $response = $response->withStatus(400);
                     $response = $response->withHeader('Content-Type', 'application/json');
                     $response->getBody()->write(json_encode([
@@ -47,6 +43,19 @@ class ApiResponseFormatter
                         'error_description' => 'Requested range not allowed'
                     ]));
                 }
+            }
+        }
+
+        return $response;
+    }
+
+    private function mergeHeaders(array $headers, ResponseInterface $response): ResponseInterface
+    {
+        foreach ($headers as $key => $header) {
+            if ('Link' === $key && $response->hasHeader('Link')) {
+                $response = $response->withHeader($key, $response->getHeader('Link')[0] . ', ' . $header);
+            } else {
+                $response = $response->withHeader($key, $header);
             }
         }
 
@@ -134,7 +143,10 @@ class ApiResponseFormatter
         return $headers;
     }
 
-    private function buildHost()
+    /**
+     * @return string
+     */
+    private function buildHost(): string
     {
         $host = $this->request->getUri()->getScheme() . '://';
         $host .= $this->request->getUri()->getHost();

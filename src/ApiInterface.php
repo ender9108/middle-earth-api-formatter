@@ -15,7 +15,7 @@ interface ApiInterface
     public function getMaxRange(): int;
 
     /**
-     * @return array
+     * @return string
      */
-    public function getHeaderLink(): array;
+    public function getHeaderLink(): string;
 }

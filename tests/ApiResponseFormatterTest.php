@@ -51,7 +51,7 @@ class ApiResponseFormatterTest extends TestCase
                     'range'  => [$range[0], $range[1]]
                 ]
             ],
-            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+            'fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
         );
 
         $response = new Response();
@@ -74,7 +74,7 @@ class ApiResponseFormatterTest extends TestCase
                     'range'  => [$range[0], $range[1]]
                 ]
             ],
-            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+            'fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
         );
 
         $response = new Response();
@@ -97,7 +97,7 @@ class ApiResponseFormatterTest extends TestCase
                     'range'  => [$range[0], $range[1]]
                 ]
             ],
-            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+            'fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
         );
 
         $response = new Response();
@@ -120,7 +120,7 @@ class ApiResponseFormatterTest extends TestCase
                     'range'  => [$range[0], $range[1]]
                 ]
             ],
-            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+            'fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
         );
 
         $response = new Response();
@@ -150,11 +150,11 @@ class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getHeaderLink(): array
+    public function getHeaderLink(): string
     {
-        return [];
+        return '<http://localhost:8080/subtests/1>; rel="subtests"; method:"GET"';
     }
 
     /**
