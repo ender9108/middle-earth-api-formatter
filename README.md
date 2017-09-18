@@ -6,12 +6,12 @@
 [![Total Downloads](https://poser.pugx.org/enderlab/psr15-api-formatter/downloads)](https://packagist.org/packages/enderlab/psr15-api-formatter)
 [![License](https://poser.pugx.org/enderlab/psr15-api-formatter/license)](https://packagist.org/packages/enderlab/psr15-api-formatter)
 
-Norme de l'api est basé sur l'article [d'octo talks](https://blog.octo.com/designer-une-api-rest/)
+API Standard based on article [d'octo talks](https://blog.octo.com/designer-une-api-rest/)
 
+[**Tradction en cours**]
 
 ## Description
-Permet de formatter et uniformiser les paramètres passés pour une API REST.
-Un attribut avec la clé "**_api**" est créé dans l'objet "**Request**".
+Format and standardize parameters for a REST API. An attribute "**_ api**" is created in the "**Request**" object.
 
 ```
 GET /api/v1/users/1?fields=firstname,lastname,address(city,street)&sort=firstname,lastname,age&desc=age&range=0-10&test=bidule

@@ -108,6 +108,27 @@ class ApiResponseFormatterTest extends TestCase
         $this->assertSame('tests 10', $response->getHeader('Accept-Range')[0]);
         $this->assertSame('0-10/10', $response->getHeader('Content-Range')[0]);
     }
+
+    public function testFormatInstanceWithRangeError()
+    {
+        $range = [0, 20];
+        $request = $this->makeRequest(
+            [
+                '_api' => [
+                    'fields' => ['firstname', 'lastname'],
+                    'sort'   => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+                    'range'  => [$range[0], $range[1]]
+                ]
+            ],
+            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+        );
+
+        $response = new Response();
+        $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
+        $response = $apiFormatter->formatResponse($response, ['count' => 10]);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+        $this->assertSame(400, $response->getStatusCode());
+    }
 }
 
 class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
