@@ -40,7 +40,7 @@ class ApiResponseFormatterTest extends TestCase
         $this->assertInstanceOf(ApiResponseFormatter::class, $apiFormatter);
     }
 
-    public function testFormatInstance()
+    public function testFormatInstance1()
     {
         $range = [20, 10];
         $request = $this->makeRequest(
@@ -57,6 +57,46 @@ class ApiResponseFormatterTest extends TestCase
         $response = new Response();
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $response = $apiFormatter->formatResponse($response, ['count' => 100]);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    public function testFormatInstance2()
+    {
+        $range = [0, 10];
+        $request = $this->makeRequest(
+            [
+                '_api' => [
+                    'fields' => ['firstname', 'lastname'],
+                    'sort'   => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+                    'range'  => [$range[0], $range[1]]
+                ]
+            ],
+            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+        );
+
+        $response = new Response();
+        $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
+        $response = $apiFormatter->formatResponse($response, ['count' => 100]);
+        $this->assertInstanceOf(ResponseInterface::class, $response);
+    }
+
+    public function testFormatInstance3()
+    {
+        $range = [0, 10];
+        $request = $this->makeRequest(
+            [
+                '_api' => [
+                    'fields' => ['firstname', 'lastname'],
+                    'sort'   => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+                    'range'  => [$range[0], $range[1]]
+                ]
+            ],
+            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range=' . $range[0] . '-' . $range[1] . '&test=bidule'
+        );
+
+        $response = new Response();
+        $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
+        $response = $apiFormatter->formatResponse($response, ['count' => 10]);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
 }
