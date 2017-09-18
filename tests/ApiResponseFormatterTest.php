@@ -14,54 +14,51 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class ApiResponseFormatterTest extends TestCase
 {
-    public function testCreateInstance()
+    private function makeRequest($attributes = [], $query = '')
     {
         $request = new ServerRequest('GET', '/tests');
+
+        foreach ($attributes as $key => $attribute) {
+            $request = $request->withAttribute($key, $attribute);
+        }
+
+        $uri = $request->getUri();
+        $uri = $uri->withQuery($query);
+        $uri = $uri->withScheme('http');
+        $uri = $uri->withPort('8080');
+        $uri = $uri->withHost('localhost');
+
+        $request = $request->withUri($uri);
+
+        return $request;
+    }
+
+    public function testCreateInstance()
+    {
+        $request = $this->makeRequest();
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
         $this->assertInstanceOf(ApiResponseFormatter::class, $apiFormatter);
     }
 
     public function testFormatInstance()
     {
-        $request = new ServerRequest('GET', '/tests');
-        $request = $request->withAttribute('_api', [
-            'fields' => ['firstname', 'lastname'],
-            'sort' => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
-            'range' => [0, 10]
-        ]);
+        $range = [0, 10];
+        $request = $this->makeRequest(
+            [
+                '_api' => [
+                    'fields' => ['firstname', 'lastname'],
+                    'sort' => ['asc' => ['firstname', 'lastname'], 'desc' => ['age']],
+                    'range' => [$range[0], $range[1]]
+                ]
+            ],
+            '?fields=firstname,lastname&sort=firstname,lastname,age&desc=age&range='.$range[0].'-'.$range[1].'&test=bidule'
+        );
+
         $response = new Response();
         $apiFormatter = new ApiResponseFormatter(new ApiMiddlewareTest(), $request);
-        $response = $apiFormatter->formatResponse($response);
+        $response = $apiFormatter->formatResponse($response, ['count' => 100]);
         $this->assertInstanceOf(ResponseInterface::class, $response);
     }
-    /*
-     * [fields] => Array(
-        [0] => firstname
-        [1] => lastname
-        [4] => Array(
-            [address] => Array(
-                [0] => city
-                [1] => street
-            )
-        )
-    )
-    [sort] => Array(
-        [asc] => Array(
-            [0] => firstname
-            [1] => lastname
-        )
-        [desc] => Array(
-            [0] => age
-        )
-    )
-    [range] => Array(
-        [0] => 0
-        [1] => 10
-    )
-    [filters] => Array(
-        [test] => bidule
-    )
-     */
 }
 
 class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
