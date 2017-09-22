@@ -10,7 +10,17 @@ API Standard based on article [d'octo talks](https://blog.octo.com/designer-une-
 
 [**Tradction en cours**]
 
-## Description
+
+## Installation
+
+```
+composer require enderlab/psr15-api-formatter
+```
+
+
+## ApiRequestFormatter
+
+### Description
 Format and standardize parameters for a REST API. An attribute "**_ api**" is created in the "**Request**" object.
 
 ```
@@ -46,11 +56,11 @@ GET /api/v1/users/1?fields=firstname,lastname,address(city,street)&sort=firstnam
 )
 ```
 
-## Paramètres
+### Parameters
 
-### Réponses partielles
+#### Partial response
 
-Les réponses partielles permettent au client de récupérer uniquement les informations dont il a besoin.
+Partial response allow clients to retrieve only the information they need
 
 ```
 GET /api/v1/users/1?fields=firstname,lastname
@@ -58,7 +68,7 @@ OR
 GET /api/v1/users/1?fields=firstname,lastname,address(city,street)
 ```
 
-ApiFormatterMiddleware retournera un tableau :
+ApiFormatterMiddleware return an array :
 ```
 [_api] => Array(
     [fields] => Array(
@@ -74,9 +84,9 @@ ApiFormatterMiddleware retournera un tableau :
 )
 ```
 
-## Pagination
+### Pagination
 
-Le paramètre "**range**" permet de paginer les résultats.
+The parameter "**range**" lets paginate the results.
 
 Format : range={offset}-{limit}
 
@@ -97,7 +107,7 @@ ApiFormatterMiddleware retournera un tableau :
 )
 ```
 
-## Tris
+### Tris
 
 Pour les tris, deux paramètres sont pris en compte.
 - sort : Contient la liste des champs séparés par des virgules
@@ -146,7 +156,7 @@ GET /api/v1/users?sort=firstname,lastname,age&desc=age
 )
 ```
 
-## Filtres
+### Filtres
 
 ```
 // Ex : Récupération de tous les users dont le prénom est "john"
@@ -167,3 +177,6 @@ GET /api/v1/users?firstname=john,david
     )
 )
 ```
+
+
+## ApiResponseFormatter
