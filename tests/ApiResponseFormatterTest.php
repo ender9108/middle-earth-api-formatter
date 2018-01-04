@@ -6,8 +6,8 @@ use EnderLab\ApiInterface;
 use EnderLab\ApiResponseFormatter;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -162,14 +162,16 @@ class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
      * to the next middleware component to create the response.
      *
      * @param ServerRequestInterface $request
-     * @param DelegateInterface      $delegate
+     * @param RequestHandlerInterface $requestHandler
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
-        $response = $delegate->process($request);
+        $response = $requestHandler->handle($request);
         $apiFormatter = new ApiResponseFormatter($this, $request);
         $response = $apiFormatter->formatResponse($response);
+
+        return $response;
     }
 }
