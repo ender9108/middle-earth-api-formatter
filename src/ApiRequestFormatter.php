@@ -2,14 +2,14 @@
 
 namespace EnderLab;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ApiRequestFormatter implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
         $params = [];
@@ -46,7 +46,7 @@ class ApiRequestFormatter implements MiddlewareInterface
 
         $request = $request->withAttribute('_api', $params);
 
-        return $delegate->process($request);
+        return $requestHandler->handle($request);
     }
 
     /**
