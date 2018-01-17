@@ -1,10 +1,10 @@
 # psr15-api-formatter
 
-[![Build Status](https://travis-ci.org/ender9108/psr15-api-formatter.svg?branch=master)](https://travis-ci.org/ender9108/psr15-api-formatter)
-[![Coverage Status](https://coveralls.io/repos/github/ender9108/psr15-api-formatter/badge.svg?branch=master)](https://coveralls.io/github/ender9108/psr15-api-formatter?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/enderlab/psr15-api-formatter/v/stable)](https://packagist.org/packages/enderlab/psr15-api-formatter)
-[![Total Downloads](https://poser.pugx.org/enderlab/psr15-api-formatter/downloads)](https://packagist.org/packages/enderlab/psr15-api-formatter)
-[![License](https://poser.pugx.org/enderlab/psr15-api-formatter/license)](https://packagist.org/packages/enderlab/psr15-api-formatter)
+[![Build Status](https://travis-ci.org/ender9108/middle-earth-api-formatter.svg?branch=master)](https://travis-ci.org/ender9108/middle-earth-api-formatter)
+[![Coverage Status](https://coveralls.io/repos/github/ender9108/middle-earth-api-formatter/badge.svg?branch=master)](https://coveralls.io/github/ender9108/middle-earth-api-formatter?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/enderlab/middle-earth-api-formatter/v/stable)](https://packagist.org/packages/enderlab/middle-earth-api-formatter)
+[![Total Downloads](https://poser.pugx.org/enderlab/middle-earth-api-formatter/downloads)](https://packagist.org/packages/enderlab/middle-earth-api-formatter)
+[![License](https://poser.pugx.org/enderlab/middle-earth-api-formatter/license)](https://packagist.org/packages/enderlab/middle-earth-api-formatter)
 
 API Standard based on article [d'octo talks](https://blog.octo.com/designer-une-api-rest/)
 
