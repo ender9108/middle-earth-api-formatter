@@ -1,4 +1,4 @@
-# psr15-api-formatter
+# middle-earth-api-formatter
 
 [![Build Status](https://travis-ci.org/ender9108/middle-earth-api-formatter.svg?branch=master)](https://travis-ci.org/ender9108/middle-earth-api-formatter)
 [![Coverage Status](https://coveralls.io/repos/github/ender9108/middle-earth-api-formatter/badge.svg?branch=master)](https://coveralls.io/github/ender9108/middle-earth-api-formatter?branch=master)
@@ -14,7 +14,7 @@ API Standard based on article [d'octo talks](https://blog.octo.com/designer-une-
 ## Installation
 
 ```
-composer require enderlab/psr15-api-formatter
+composer require enderlab/middle-earth-api-formatter
 ```
 
 
