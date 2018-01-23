@@ -28,7 +28,7 @@ class ApiResponseFormatter
     {
         if ($this->request->getAttribute('_api', false)) {
             $requestParams = $this->request->getAttribute('_api');
-            $response = $this->mergeHeaders(['Link' => $this->api->getHeaderLink()], $response);
+            $response = $this->mergeHeaders(['Link' => $this->api->getHeaderLink($this->request)], $response);
 
             if (isset($requestParams['range']) && 2 === count($requestParams['range'])) {
                 if ($requestParams['range'][1] <= $this->api->getMaxRange()) {

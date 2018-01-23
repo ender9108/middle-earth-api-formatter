@@ -2,6 +2,8 @@
 
 namespace EnderLab;
 
+use Psr\Http\Message\ServerRequestInterface;
+
 interface ApiInterface
 {
     /**
@@ -17,5 +19,5 @@ interface ApiInterface
     /**
      * @return string
      */
-    public function getHeaderLink(): string;
+    public function getHeaderLink(ServerRequestInterface $request): string;
 }
