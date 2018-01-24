@@ -150,14 +150,6 @@ class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
     }
 
     /**
-     * @return string
-     */
-    public function getHeaderLink(): string
-    {
-        return '<http://localhost:8080/subtests/1>; rel="subtests"; method:"GET"';
-    }
-
-    /**
      * Process an incoming server request and return a response, optionally delegating
      * to the next middleware component to create the response.
      *
@@ -173,5 +165,13 @@ class ApiMiddlewareTest implements MiddlewareInterface, ApiInterface
         $response = $apiFormatter->formatResponse($response);
 
         return $response;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeaderLink(ServerRequestInterface $request): string
+    {
+        return '<http://localhost:8080/subtests/1>; rel="subtests"; method:"GET"';
     }
 }
