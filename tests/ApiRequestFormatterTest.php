@@ -16,19 +16,6 @@ class ApiRequestFormatterTest extends TestCase
         $this->assertInstanceOf(ApiRequestFormatter::class, $apiFormatter);
     }
 
-    public function testParseFieldsParam()
-    {
-        $request = new ServerRequest(
-            'GET',
-            '/api/v1/users'
-        );
-        $request = $request->withQueryParams(['fields' => 'firstname,lastname,address(country,city)']);
-        $delegate = new Dispatcher();
-        $apiFormatter = new ApiRequestFormatter();
-        $response = $apiFormatter->process($request, $delegate);
-        $this->assertInstanceOf(ResponseInterface::class, $response);
-    }
-
     public function testParseSortParam()
     {
         $request = new ServerRequest(
